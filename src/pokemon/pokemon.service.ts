@@ -51,11 +51,59 @@ export class PokemonService {
     return pokemon;
   }
 
-  update(id: number, updatePokemonDto: UpdatePokemonDto) {
-    return `This action updates a #${id} pokemon`;
+  async update(term: string, updatePokemonDto: UpdatePokemonDto) {
+    if (updatePokemonDto.name) {
+      updatePokemonDto.name = updatePokemonDto.name.toLowerCase();
+    }
+
+    try {
+      const pokemon = await this.pokemonModel.findOne({
+        $or: [
+          { name: term.toLowerCase() },
+          { _id: isMongoId(term) ? term : null },
+        ],
+      });
+
+      if (!pokemon) {
+        throw new NotFoundException(`Pokemon with term ${term} not found`);
+      }
+
+      await this.pokemonModel.updateOne(
+        { _id: pokemon._id },
+        { $set: updatePokemonDto },
+      );
+
+      return {
+        ...pokemon.toJSON(),
+        ...updatePokemonDto,
+      };
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new BadRequestException(
+          `Pokemon exists in db ${JSON.stringify(error.keyValue)}`,
+        );
+      }
+      throw new InternalServerErrorException('Something went wrong', error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pokemon`;
+  async remove(term: string) {
+    const pokemon = await this.pokemonModel.findOne({
+      $or: [
+        { name: term.toLowerCase() },
+        { _id: isMongoId(term) ? term : null },
+      ],
+    });
+
+    if (!pokemon) {
+      throw new NotFoundException(`Pokemon with term ${term} not found`);
+    }
+
+    try {
+      await this.pokemonModel.deleteOne({ _id: pokemon._id });
+      return { message: `Pokemon with term ${term} has been deleted` };
+    } catch (error) {
+      throw new InternalServerErrorException('Something went wrong', error);
+    }
   }
 }

@@ -62,3 +62,13 @@ mongo/sizeStorer.wt
 mongo/WiredTiger*
 mongo/index-*
 mongo/journal/
+mongo/collection-*
+mongo/diagnostic.data/
+mongo/diagnostic.data/*
+mongo/metrics.*
+mongo/*.metrics
+mongo/diagnostic.data/metrics.*
+mongo/diagnostic.data/*.interim
+mongo/diagnostic.data/*.metrics
+mongo/diagnostic.data/*.wt
+mongo/diag*
