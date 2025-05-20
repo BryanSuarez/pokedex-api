@@ -20,6 +20,11 @@
   docker-compose up -d
 ```
 
+6. Insertar registros desde el seed (para desarrollo)
+```
+  http://localhost:3000/api/seed
+```
+
 ##Stack usado
 * NestJS
 * MongoDB
