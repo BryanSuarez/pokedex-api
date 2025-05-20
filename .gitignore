@@ -54,3 +54,11 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Ignorar archivos y carpetas de MongoDB
+mongo/*.wt
+mongo/*.turtle
+mongo/sizeStorer.wt
+mongo/WiredTiger*
+mongo/index-*
+mongo/journal/
