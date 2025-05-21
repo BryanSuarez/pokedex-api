@@ -72,3 +72,5 @@ mongo/diagnostic.data/*.interim
 mongo/diagnostic.data/*.metrics
 mongo/diagnostic.data/*.wt
 mongo/diag*
+
+.env
